@@ -1,5 +1,7 @@
 html {
 	--foreground-color: #1A1B1E;
+	--foreground-secondary-color: #6A6B6E;
+	--theme-colour:  #F18701;
 	--hero-section-grid-line-background-property: no-repeat linear-gradient(var(--foreground-color));
 	--hero-section-grid-line-width: 0.1rem;
 
@@ -14,18 +16,21 @@ html, body, main, #hero-section {
 }
 body {
 	margin: 0;
-	
 	font-family: "DM Sans", system-ui, sans-serif;
-	font-size: calc(var(--base-font-size) * 1.2);
+	font-size: 1.2rem;
 	color: var(--foreground-color);
 }
 section {
-	padding: 2rem;
+	padding: 0 2rem;
+}
+section:last-child {
+	padding-bottom: 2rem;
 }
 
 #hero-section {
 	box-sizing: border-box;
 	height: 100%;
+	padding: 2rem 2rem;
 
 	display: grid;
 	grid-template-columns: minmax(10vw, 1fr) auto minmax(10vw, 1fr);
@@ -166,7 +171,10 @@ span#introduction {
 	font-style: italic;
 }
 h2 {
-	font-size: calc(var(--base-font-size) * 3);
+	font-size: calc(var(--base-font-size) * 4);
+}
+h3 {
+	font-size: calc(var(--base-font-size) * 2);
 }
 
 section:not(#hero-section) {
@@ -175,19 +183,51 @@ section:not(#hero-section) {
 	align-items: center;
 }
 
+a:not(.image-link) {
+	color: var(--theme-colour);
+	text-decoration: none;
+
+	background-image: linear-gradient(var(--theme-colour));
+	background-position: 0% 100%;
+	background-repeat: no-repeat;
+	background-size: 100% 0.1em;
+
+	transition-duration: 0.3s;
+}
+a:hover:not(.image-link) {
+	filter: brightness(130%);
+	background-size: 0 0.1em;
+}
+a.outside-text-link::after {
+	margin-left: 0.2em;
+	content: url("./assets/icons/open_in_new_24dp_1A1B1E_FILL0_wght400_GRAD0_opsz24.svg");
+}
+
 #portfolio-list {
+	display: flex;
+	gap: 4rem;
+	flex-wrap: wrap;
+
 	padding: 0;
 	list-style-type: none;
 }
-#portfolio-list > li {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	flex-wrap: wrap;
-
-	padding: 2rem;
-	border: var(--hero-section-grid-line-width) solid var(--foreground-color);
-}
-#portfolio-list > li div.text-container {
+div.text-container {
+	align-self: center;
 	max-width: 40ch;
+	line-height: 1.4;
+}
+img#tiger-tank-website-screenshot {
+	width: 100%;
+	transition-duration: 0.3s;
+}
+img#tiger-tank-website-screenshot:hover {
+	transform: scale(110%);
+}
+blockquote {
+	margin: 2rem 0;
+	padding-left: 1rem;
+	border-left: 0.2rem solid var(--foreground-secondary-color);
+
+	font-style: italic;
+	color: var(--foreground-secondary-color);
 }
