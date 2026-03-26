@@ -1,45 +1,193 @@
+html {
+	--foreground-color: #1A1B1E;
+	--hero-section-grid-line-background-property: no-repeat linear-gradient(var(--foreground-color));
+	--hero-section-grid-line-width: 0.1rem;
+
+	/* the animation only plays for a fraction of this time to account for the other lines' animations */
+	--hero-section-grid-animation-duration: 1s;
+	--hero-section-grid-animation-property: linear infinite alternate both;
+
+	--base-font-size: min(3.33vw, 1rem);
+}
 html, body, main, #hero-section {
 	height: 100%;
 }
 body {
 	margin: 0;
 	
-	font-family: "DM Sans";
-	color: #1A1B1E;
+	font-family: "DM Sans", system-ui, sans-serif;
+	font-size: calc(var(--base-font-size) * 1.2);
+	color: var(--foreground-color);
 }
 section {
 	padding: 2rem;
 }
-#hero-section {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 
+#hero-section {
 	box-sizing: border-box;
 	height: 100%;
+
+	display: grid;
+	grid-template-columns: minmax(10vw, 1fr) auto minmax(10vw, 1fr);
+	grid-template-rows: minmax(10vw, 1fr) min-content min-content min-content minmax(10vw, 1fr);
 }
-#hero-section > #greeting {
-	font-size: 2rem;
+#hero-section > * {
+	text-align: center;
+}
+
+
+.horizontal-grid-line, .vertical-grid-line {
+	/* make text highlightable */
+	z-index: -1;
+}
+.horizontal-grid-line {
+	grid-column: 1 / 4;
+
+	background: var(--hero-section-grid-line-background-property);
+	background-size: 100% var(--hero-section-grid-line-width);
+	background-position-y: 100%;
+
+	animation: var(--hero-section-grid-animation-property);
+	animation-name: horizontal-line;
+	animation-duration: calc(var(--hero-section-grid-animation-duration) * 4);
+}
+.horizontal-grid-line:nth-of-type(1) {
+	grid-row-start: 1;
+	/* start the animation immediately upon page load */
+	animation-delay: calc(var(--hero-section-grid-animation-duration) * -1);
+}
+.horizontal-grid-line:nth-of-type(2) {
+	grid-row-start: 2;
+	animation-direction: alternate-reverse;
+}
+.horizontal-grid-line:nth-of-type(3) {
+	grid-row-start: 3;
+	animation-delay: var(--hero-section-grid-animation-duration);
+}
+.horizontal-grid-line:nth-of-type(4) {
+	grid-row-start: 4;
+	animation-delay: calc(var(--hero-section-grid-animation-duration) * 2);
+	animation-direction: alternate-reverse;
+}
+
+.vertical-grid-line {
+	grid-row: 1 / 6;
+
+	background: var(--hero-section-grid-line-background-property);
+	background-size: var(--hero-section-grid-line-width) 100%;
+	background-position: right;
+
+	animation: var(--hero-section-grid-animation-property);
+	animation-duration: calc(var(--hero-section-grid-animation-duration) * 2);
+	animation-direction: alternate-reverse;
+	animation-name: vertical-line;
+}
+.vertical-grid-line:nth-of-type(5) {
+	grid-column-start: 1;
+	animation-delay: calc(var(--hero-section-grid-animation-duration) / 2 * -1);
+}
+.vertical-grid-line:nth-of-type(6) {
+	grid-column-start: 2;
+	animation-delay: calc(var(--hero-section-grid-animation-duration) / 2);
+}
+
+
+/* do not start the animation at 0% nor end at at 100% so that there is a visual delay between animation iterations */
+@keyframes horizontal-line {
+	0%, 37.5% {
+		background-size: 0% var(--hero-section-grid-line-width);
+		background-position-x: 0%;
+	}
+	45.83% {
+		background-size: 50% var(--hero-section-grid-line-width);
+		background-position-x: 0%;
+	}
+	54.16% {
+		background-size: 50% var(--hero-section-grid-line-width);
+		background-position-x: 100%;
+	}
+	62.5%, 100% {
+		background-size: 0% var(--hero-section-grid-line-width);
+		background-position-x: 100%;
+	}
+}
+
+@keyframes vertical-line {
+	/* split 25% to 75% into three parts */
+	0%, 25% {
+		background-size: var(--hero-section-grid-line-width) 0%;
+		background-position-y: 0%;
+	}
+	41.67% {
+		background-size: var(--hero-section-grid-line-width) 50%;
+		background-position-y: 0%;
+	}
+	58.34% {
+		background-size: var(--hero-section-grid-line-width) 50%;
+		background-position-y: 100%;
+	}
+	75%, 100% {
+		background-size: var(--hero-section-grid-line-width) 0%;
+		background-position-y: 100%;
+	}
+}
+
+span#greeting, h1, span#introduction {
+	padding: 1rem;
+}
+span#greeting {
+	grid-column-start: 2;
+	grid-row-start: 2;
+	
+	font-size: calc(var(--base-font-size) * 2);
 }
 h1 {
-	margin-top: 0;
+	grid-column-start: 2;
+	grid-row-start: 3;
 
-	font-size: 6rem;
+	margin: 0;
+
+	font-size: calc(var(--base-font-size) * 6);
 	font-weight: 400;
 }
 h1 > #name {
-	/* background-image: linear-gradient(#55321d); */
-	background-repeat: no-repeat;
-	background-size: 100% 5%;
-	background-position: 100% 85%;
+	/* prefer to not wrap name */
+	display: inline-block;
+}
+span#introduction::before {
+	content: "> ";
+}
+span#introduction {
+	grid-column-start: 2;
+	grid-row-start: 4;
+
+	font-family: "DM Mono", monospace;
+	font-size: calc(var(--base-font-size) * 1.5);
+	font-style: italic;
 }
 h2 {
-	font-size: 3rem;
+	font-size: calc(var(--base-font-size) * 3);
 }
 
-#hero-section > #background-art {
-	position: absolute;
-	z-index: -1;
-	opacity: 50%;
+section:not(#hero-section) {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#portfolio-list {
+	padding: 0;
+	list-style-type: none;
+}
+#portfolio-list > li {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+
+	padding: 2rem;
+	border: var(--hero-section-grid-line-width) solid var(--foreground-color);
+}
+#portfolio-list > li div.text-container {
+	max-width: 40ch;
 }
