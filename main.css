@@ -11,9 +11,6 @@ html {
 
 	--base-font-size: min(3.33vw, 1rem);
 }
-html, body, main, #hero-section {
-	height: 100%;
-}
 body {
 	margin: 0;
 	font-family: "DM Sans", system-ui, sans-serif;
@@ -29,7 +26,7 @@ section:last-child {
 
 #hero-section {
 	box-sizing: border-box;
-	height: 100%;
+	min-height: 100vh;
 	padding: 2rem 2rem;
 
 	display: grid;
